@@ -1,0 +1,6 @@
+# pymongo
+# pprint
+# dbspython
+# simplejson
+# Flask
+# Flask-Cors
