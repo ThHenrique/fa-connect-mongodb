@@ -1,6 +1,12 @@
-# pymongo
-# pprint
-# dbspython
-# simplejson
-# Flask
-# Flask-Cors
+click==8.0.4
+dnspython==2.2.1
+Flask==2.0.3
+Flask-Cors==3.0.10
+itsdangerous==2.1.1
+Jinja2==3.0.3
+MarkupSafe==2.1.1
+pkg_resources==0.0.0
+pymongo==4.0.2
+simplejson==3.17.6
+six==1.16.0
+Werkzeug==2.0.3
