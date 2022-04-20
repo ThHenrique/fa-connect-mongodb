@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 
 def connect():
-  client = MongoClient("mongodb+srv://<user>:<password>@<url>")
-  mydb = client['mercado-livre']
+  db = MongoClient("mongodb+srv://root:1234@fa-starting-no-sql.6vnsq.mongodb.net/")
+  return db['mercado-livre']
 
-  return mydb
