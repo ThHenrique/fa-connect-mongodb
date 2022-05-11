@@ -6,7 +6,7 @@ from src.routes.productRoutes import product
 from src.routes.sellerRoutes import seller
 from src.routes.userRoutes import user
 
-from src.routes.redisTest import redis
+from src.routes.voucherRoutes import voucher
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -18,7 +18,7 @@ app.register_blueprint(seller, url_prefix='/seller')
 app.register_blueprint(user, url_prefix='/user')
 
 
-app.register_blueprint(redis, url_prefix='/test/redis')
+app.register_blueprint(voucher, url_prefix='/voucher')
 
 @app.route('/')
 def test():
