@@ -21,7 +21,9 @@ app.register_blueprint(user, url_prefix='/user')
 
 
 app.register_blueprint(voucher, url_prefix='/voucher')
+
 app.register_blueprint(cassandra, url_prefix='/cassandra')
+
 
 @app.route('/')
 def test():
