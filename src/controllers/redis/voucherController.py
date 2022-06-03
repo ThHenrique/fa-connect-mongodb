@@ -38,7 +38,7 @@ def create(request):
 def show(params):
   voucher_title = params.get("voucher-name")  
 
-  return findVoucher(voucher_title)   
+  return json.dumps(findVoucher(voucher_title))   
 
 def update(request):
   voucher_title = request.args.get("voucher-name")
@@ -86,8 +86,7 @@ def delete(params):
 
 def findVoucher(voucherName):
   try:
-    voucher = json.loads(cursor.get(f'voucher:{voucherName}'))
-    return json.dumps(voucher)   
+    return json.loads(cursor.get(f'voucher:{voucherName}'))
   except:
     return json.dumps({"hasError": True, "Message": "Nenhum item encontrado"})
 
