@@ -1,6 +1,6 @@
-# Backend
+# Flask API - Python 🐍
 
-Neste guia iremos configurar o ambiente de desenvolvimento com a instalação e configuração de um ambiente isolado, instalação dos requisitos do projeto, instalação e utilização do Flask e utilização do MongoDB.
+Neste guia iremos configurar o ambiente de desenvolvimento com a instalação e configuração de um ambiente isolado, instalação dos requisitos do projeto, instalação e utilização do Flask e utilização do MongoDB, Redis e Cassandra.
 
 
 ---
@@ -8,10 +8,7 @@ Neste guia iremos configurar o ambiente de desenvolvimento com a instalação e 
 ### Requisitos mínimos
 
 1. _Python_
-2. _MongoDB_
 
-<br/>
-<br/>
 
 ---
 
@@ -20,7 +17,7 @@ Neste guia iremos configurar o ambiente de desenvolvimento com a instalação e 
 **Verifique se o pip está instalado**
 
 ```bash
-python -m pip --version
+  python -m pip --version
 ```
 
 _Siga a documentação oficial do pip caso você não tenha instalado:_
@@ -34,13 +31,13 @@ _Siga a documentação oficial do pip caso você não tenha instalado:_
 _Ferramenta para criar ambientes Python isolados._
 
 ```bash
-python -m pip install virtualenv
+  python -m pip install virtualenv
 ```
 
 **Clone o repositório do backend**
 
 ```bash
-git clone https://github.com/ThHenrique/fa-connect-mongodb.git
+  git clone https://github.com/ThHenrique/fa-connect-mongodb.git
 ```
 
 **Abra o projeto no vsCode**
@@ -56,29 +53,24 @@ code .
 python -m venv venv
 ```
 
-**Ative o ambiente**
+**Ative o ambiente virtual**
 
-No terminal Windows PowerShell
+<details>
+  <summary>Windows PowerShell</summary>
 
-```powershell
-venv\Scripts\activate
-```
+  ```powershell
+    venv\Scripts\activate
+  ```
+</details>
 
-**OU**
+<details>
+  <summary>Linux</summary>
 
-Terminal Bash
+  ```bash
+    . venv/bin/activate
+  ```
+</details>
 
-```bash
-. venv/bin/activate
-
-# Linux: . venv/bin/activate
-```
-
-**Atualize a versão pip**
-
-```bash
-pip install -U pip
-```
 
 **Instalando as dependências do projeto**
 
@@ -93,15 +85,74 @@ pip install -r requirements.txt
 <br/>
 <br/>
 
-# Configuração do MongoDB 🍃
+# Configurando a conexão com os bancos de dados
+<details>
+  <summary>MongoDB 🍃</summary>
+  
+  ### Para realizar conexão com o MongoDB é necessário alterar o usuário e senha no arquivo connectDb em **src/connectDb.py**. Caso necessário, entre em contato comigo.
 
-### Para realizar conexão com o MongoDB é necessário alterar o usuário e senha no arquivo connectDb em **src/connectDb.py**. Caso necessário, entre em contato comigo.
+  ``` python
+    db = pymongo.MongoClient("mongodb+srv://<user>:<password>@fa-starting-no-sql.6vnsq.mongodb.net/")
+  ```
+</details>
 
 
+<details>
+  <summary>Redis 🔴🟥🔺</summary>
+  
+  ### Para realizar conexão com o Redis é necessário alterar o host, port e password no arquivo connectRedis em **src/connectRedis.py**. Caso necessário, entre em contato comigo.
 
-``` python
-db = pymongo.MongoClient("mongodb+srv://<user>:<password>@fa-starting-no-sql.6vnsq.mongodb.net/")
-```
+  ``` python
+    db = redis.Redis(
+        host='<host>',
+        port='<port>',
+        password='<password>',
+        decode_responses=True
+      )
+  ```
+</details>
+
+<details>
+  <summary>Cassandra 👁‍🗨</summary>
+
+  ### Para realizar conexão com o Cassandra é necessário alterar o ASTRA_DB_ID, ASTRA_DB_REGION e ASTRA_DB_APPLICATION_TOKEN no arquivo connectCassandra em **src/connectCassandra.py**. Caso necessário, entre em contato comigo.
+
+  ``` python
+    ASTRA_DB_ID = '<BD-ID>'
+    ASTRA_DB_REGION = '<DB-REGION>'
+    ASTRA_DB_APPLICATION_TOKEN = '<token>'
+    ASTRA_DB_KEYSPACE = 'mercadolivre'
+    TEST_COLLECTION_NAME = "test"
+  ```
+</details>
+
+<br/>
+<br/> 
+
+## Instalação e configuração do Insomnia
+<details>
+  <summary>Insomnia</summary>
+
+  Siga a documentação oficial do insomnia caso você não tenha instalado:_
+
+  [Installation - insomnia](https://insomnia.rest/download)
+
+  Caso você não conheça esse software veja o link a seguir para aprender:_
+
+  [Get Started - insomnia](https://docs.insomnia.rest/insomnia/send-your-first-request)
+
+  Você pode baixar e importar no insomnia a configuração de ambiente que deixei na pasta raiz do projeto. Caso tenha alguma dúvida de como importar essa configuração, leia o link abaixo.
+
+  [Import and Export Data - insomnia](https://docs.insomnia.rest/insomnia/import-export-data)
+
+
+  **/Insomnia_2022-04-25.json**
+
+  ---
+
+  Caso tenha algum problema no processo, entre em contato.
+</details>
+
 
 <br/>
 
@@ -109,7 +160,7 @@ db = pymongo.MongoClient("mongodb+srv://<user>:<password>@fa-starting-no-sql.6vn
 
 # Utilizando o FLASK 🌶️
 
-Com o ambiente ativado ...
+Com o ambiente virtual ativado ...
 
 ```bash
 python main.py
@@ -121,24 +172,4 @@ A porta padrão do projeto é 5000.
 
 ---
 
-## Instalação e configuração do Insomnia
 
-
-Siga a documentação oficial do insomnia caso você não tenha instalado:_
-
-[Installation - insomnia](https://insomnia.rest/download)
-
-Caso você não conheça esse software veja o link a seguir para aprender:_
-
-[Get Started - insomnia](https://docs.insomnia.rest/insomnia/send-your-first-request)
-
-Você pode baixar e importar no insomnia a configuração de ambiente que deixei na pasta raiz do projeto. Caso tenha alguma dúvida de como importar essa configuração, leia o link abaixo.
-
-[Import and Export Data - insomnia](https://docs.insomnia.rest/insomnia/import-export-data)
-
-
-**/Insomnia_2022-04-25.json**
-
----
-
-Caso tenha algum problema no processo, entre em contato.
