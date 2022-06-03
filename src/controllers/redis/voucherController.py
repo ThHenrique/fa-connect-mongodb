@@ -14,7 +14,7 @@ def create(request):
     expiration = body["expiration-in-seconds"]
     clauses  = body["clauses"]
 
-    ticket_value = json.dumps(
+    voucher_value = json.dumps(
       {
         "title": title,
         "discount_percent": discount_percent,
@@ -25,38 +25,35 @@ def create(request):
     )
 
     try:
-      cursor.set(f'ticket:{title}', ticket_value)
-      cursor.expire(f'ticket:{title}', expiration)
+      if hasVoucher(title):
+        return json.dumps({"status": "error", "message":"Cupom já cadastrado"})
+
+      cursor.set(f'voucher:{title}', voucher_value)
+      cursor.expire(f'voucher:{title}', expiration)
 
       return json.dumps({"status": "ok"})
     except: 
       return json.dumps({"status": "error"})
 
 def show(params):
-  ticket_title = params.get("ticket-name")  
-  
-  try:
-    ticket = json.loads(cursor.get(f'ticket:{ticket_title}'))
-    return json.dumps(ticket)   
-  except:
-    return json.dumps({"hasError": True, "Message": "Nenhum item encontrado"})
+  voucher_title = params.get("voucher-name")  
+
+  return findVoucher(voucher_title)   
 
 def update(request):
-  ticket_title = request.args.get("ticket-name")
+  voucher_title = request.args.get("voucher-name")
   body = request.get_json()
 
-  exists_ticket = cursor.exists(f'ticket:{ticket_title}')
-
-  if (exists_ticket != 0):    
+  if (hasVoucher(voucher_title)):    
     discount_percent = body["discount_percent"]
     in_operation = body["in_operation"]
     description = body["description"]
     expiration = body["expiration-in-seconds"]
     clauses  = body["clauses"]
 
-    ticket_value = json.dumps(
+    voucher_value = json.dumps(
       {
-        "title": ticket_title,
+        "title": voucher_title,
         "discount_percent": discount_percent,
         "in_operation": in_operation,
         "description": description,
@@ -64,25 +61,35 @@ def update(request):
       }
     )
     try:
-      cursor.set(f'ticket:{ticket_title}', ticket_value)
-
-      # date_expiration = date.strftime(expiration, '%d/%m/%Y %H:%M') 
-      # print(date_expiration)
+      cursor.set(f'voucher:{voucher_title}', voucher_value)
+      cursor.expire(f'voucher:{voucher_title}', expiration)
       
-      cursor.expire(f'ticket:{ticket_title}', expiration)
       return json.dumps({"status": "ok"})
     except: 
       return json.dumps({"status": "error"})
+  else:
+    return json.dumps({"status": "error"})
+
 
 def delete(params):
-  ticket_title = params.get("ticket-name")  
+  voucher_title = params.get("voucher-name")  
 
-  exists_ticket = cursor.exists(f'ticket:{ticket_title}')
-
-  if (exists_ticket != 0):        
+  if (hasVoucher(voucher_title)):        
     try:
-      cursor.delete(f'ticket:{ticket_title}')
+      cursor.delete(f'voucher:{voucher_title}')
 
       return json.dumps({"status": "ok"})  
     except:
-      return json.dumps({"hasError": True, "Message": "Nenhum item encontrado"})
+      return json.dumps({"hasError": True, "Message": "Não foi possível deletar cupom"})
+  else:
+    return json.dumps({"hasError": True, "Message": "Nenhum item encontrado"})
+
+def findVoucher(voucherName):
+  try:
+    voucher = json.loads(cursor.get(f'voucher:{voucherName}'))
+    return json.dumps(voucher)   
+  except:
+    return json.dumps({"hasError": True, "Message": "Nenhum item encontrado"})
+
+def hasVoucher(voucher_title):
+  return cursor.exists(f'voucher:{voucher_title}') != 0
