@@ -12,7 +12,7 @@ def create(request):
     in_operation = body["in_operation"]
     description = body["description"]
     expiration = body["expiration-in-seconds"]
-    clauses  = body["clauses"]
+    clause  = body["clause"]
 
     voucher_value = json.dumps(
       {
@@ -20,7 +20,7 @@ def create(request):
         "discount_percent": discount_percent,
         "in_operation": in_operation,
         "description": description,
-        "clauses": clauses
+        "clause": clause
       }
     )
 
@@ -49,7 +49,7 @@ def update(request):
     in_operation = body["in_operation"]
     description = body["description"]
     expiration = body["expiration-in-seconds"]
-    clauses  = body["clauses"]
+    clause  = body["clause"]
 
     voucher_value = json.dumps(
       {
@@ -57,7 +57,7 @@ def update(request):
         "discount_percent": discount_percent,
         "in_operation": in_operation,
         "description": description,
-        "clauses": clauses
+        "clause": clause
       }
     )
     try:

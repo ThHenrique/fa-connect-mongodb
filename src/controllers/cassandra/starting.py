@@ -3,15 +3,13 @@ import src.connectCassandra as connectCassandra
 import json
 import uuid
 
+ASTRA_DB_KEYSPACE = 'mercadolivre'
+ASTRA_DB_TABLE = "voucher"
+
 cursor = connectCassandra.connect()
 
 def show():
-    
-  # create a new document
-  cliff_uuid = str(uuid.uuid4())
-  cursor.create(path=cliff_uuid, document={
-    "first_name": "Cliff",
-    "last_name": "Wicklow",
-  })
-  
+  selectAll = cursor.search_table(keyspace=ASTRA_DB_KEYSPACE, table=ASTRA_DB_TABLE, query={})
+  print(selectAll)
+
   return json.dumps({"hasError": False, "Message": "Deu bom"})
