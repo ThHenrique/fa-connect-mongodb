@@ -5,15 +5,20 @@ import src.controllers.redis.voucherController as voucherController
 
 voucher = Blueprint('voucher', __name__)
 
-@voucher.route("/", methods=['GET'])
-@cross_origin()
-def test():
-	return voucherController.show(request.args)
-
 @voucher.route("/create", methods=['POST'])
 @cross_origin()
 def create():
 	return voucherController.create(request)
+
+@voucher.route("/", methods=['GET'])
+@cross_origin()
+def index():
+	return voucherController.index()
+
+@voucher.route("/show", methods=['GET'])
+@cross_origin()
+def show():
+	return voucherController.show(request.args)
 
 @voucher.route("/update", methods=['PUT'])
 @cross_origin()

@@ -1,5 +1,6 @@
 from datetime import date
 import src.connectRedis as connectRedis
+import controllers.cassandra.cassandraSQL as cassandraCQL
 import json
 
 cursor = connectRedis.connect()
@@ -30,10 +31,14 @@ def create(request):
 
       cursor.set(f'voucher:{title}', voucher_value)
       cursor.expire(f'voucher:{title}', expiration)
+      cassandraCQL.create(voucher_value)
 
       return json.dumps({"status": "ok"})
     except: 
       return json.dumps({"status": "error"})
+
+def index():
+  return cassandraCQL.index()
 
 def show(params):
   voucher_title = params.get("voucher-name")  
@@ -63,12 +68,13 @@ def update(request):
     try:
       cursor.set(f'voucher:{voucher_title}', voucher_value)
       cursor.expire(f'voucher:{voucher_title}', expiration)
-      
+      cassandraCQL.update(voucher_value)
+
       return json.dumps({"status": "ok"})
-    except: 
-      return json.dumps({"status": "error"})
+    except Exception as e: 
+      return json.dumps({"status": e})
   else:
-    return json.dumps({"status": "error"})
+    return json.dumps({"status": "Not Found"})
 
 
 def delete(params):
@@ -77,6 +83,7 @@ def delete(params):
   if (hasVoucher(voucher_title)):        
     try:
       cursor.delete(f'voucher:{voucher_title}')
+      cassandraCQL.delete(voucher_title)
 
       return json.dumps({"status": "ok"})  
     except:

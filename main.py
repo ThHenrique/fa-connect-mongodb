@@ -8,8 +8,6 @@ from src.routes.userRoutes import user
 
 from src.routes.voucherRoutes import voucher
 
-from src.routes.mercalivreCassandra import cassandra
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -21,7 +19,6 @@ app.register_blueprint(user, url_prefix='/user')
 
 
 app.register_blueprint(voucher, url_prefix='/voucher')
-app.register_blueprint(cassandra, url_prefix='/cassandra')
 
 @app.route('/')
 def test():
